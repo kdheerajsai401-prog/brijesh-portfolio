@@ -16,3 +16,5 @@ npm-debug.log*
 # dev/verification artifacts
 screenshots
 .playwright-mcp
+
+.vercel

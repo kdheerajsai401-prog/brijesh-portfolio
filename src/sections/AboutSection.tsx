@@ -1,5 +1,5 @@
 import FadeIn from '../components/FadeIn';
-import AnimatedText from '../components/AnimatedText';
+import ScrollReveal from '../components/ScrollReveal';
 import ContactButton from '../components/ContactButton';
 
 const ABOUT_TEXT =
@@ -64,12 +64,17 @@ export default function AboutSection() {
       </FadeIn>
 
       {/* Animated paragraph */}
-      <div className="relative z-10 max-w-[560px]">
-        <AnimatedText
-          text={ABOUT_TEXT}
-          className="text-[#D7E2EA] font-medium text-center leading-relaxed"
-          style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }}
-        />
+      <div className="relative z-10 max-w-[680px]">
+        <ScrollReveal
+          baseOpacity={0}
+          enableBlur
+          baseRotation={4}
+          blurStrength={8}
+          textClassName="text-[#D7E2EA] font-semibold text-center leading-relaxed"
+          textStyle={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)' }}
+        >
+          {ABOUT_TEXT}
+        </ScrollReveal>
       </div>
 
       <div className="relative z-10 mt-6 sm:mt-10 md:mt-14">
