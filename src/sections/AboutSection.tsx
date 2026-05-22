@@ -1,11 +1,13 @@
 import FadeIn from '../components/FadeIn';
 import ScrollReveal from '../components/ScrollReveal';
 import ContactButton from '../components/ContactButton';
+import { useSiteContent } from '../lib/content';
 
 const ABOUT_TEXT =
   'I’m a photographer and visual storyteller focused on capturing real emotions, honest moments, and timeless stories. My work blends cinematic lighting, natural emotion, and creative composition to create images that feel powerful, personal, and alive.';
 
 export default function AboutSection() {
+  const c = useSiteContent();
   return (
     <section
       id="about"
@@ -73,7 +75,7 @@ export default function AboutSection() {
           textClassName="text-[#D7E2EA] font-semibold text-center leading-relaxed"
           textStyle={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)' }}
         >
-          {ABOUT_TEXT}
+          {c('about_text', ABOUT_TEXT)}
         </ScrollReveal>
       </div>
 

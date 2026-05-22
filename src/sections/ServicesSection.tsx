@@ -1,3 +1,5 @@
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import FadeIn from '../components/FadeIn';
 
 type Service = {
@@ -6,6 +8,7 @@ type Service = {
   description: string;
 };
 
+// Fallback: rendered while Convex loads or if it's unreachable / not yet seeded.
 const SERVICES: Service[] = [
   {
     number: '01',
@@ -40,6 +43,9 @@ const SERVICES: Service[] = [
 ];
 
 export default function ServicesSection() {
+  const data = useQuery(api.services.list);
+  const services: Service[] = data ?? SERVICES;
+
   return (
     <section
       id="services"
@@ -60,7 +66,7 @@ export default function ServicesSection() {
       </FadeIn>
 
       <div className="max-w-5xl mx-auto">
-        {SERVICES.map((s, i) => (
+        {services.map((s, i) => (
           <FadeIn key={s.number} delay={i * 0.1} y={30}>
             <div
               className="flex items-start gap-6 sm:gap-8 md:gap-10 py-8 sm:py-10 md:py-12"

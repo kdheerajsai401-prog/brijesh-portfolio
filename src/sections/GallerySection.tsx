@@ -1,5 +1,7 @@
 import { EffectCoverflow, Pagination, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
@@ -12,6 +14,7 @@ const U = (id: string) =>
 
 type Shot = { src: string; alt: string };
 
+// Fallback: rendered while Convex loads or if it's unreachable / not yet seeded.
 const IMAGES: Shot[] = [
   { src: U('1519741497674-611481863552'), alt: 'Wedding' },
   { src: U('1494790108377-be9c29b29330'), alt: 'Portrait' },
@@ -60,6 +63,9 @@ const carouselCss = `
 `;
 
 export default function GallerySection() {
+  const data = useQuery(api.gallery.list);
+  const images: Shot[] = data ?? IMAGES;
+
   return (
     <section
       id="work"
@@ -98,7 +104,7 @@ export default function GallerySection() {
             className="work-carousel"
             modules={[EffectCoverflow, Pagination, Scrollbar]}
           >
-            {IMAGES.map((image, index) => (
+            {images.map((image, index) => (
               <SwiperSlide key={index}>
                 <img
                   className="h-full w-full object-cover"

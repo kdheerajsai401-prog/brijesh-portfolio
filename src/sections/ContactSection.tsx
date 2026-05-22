@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from 'react';
 import FadeIn from '../components/FadeIn';
+import { useSiteContent } from '../lib/content';
 
-// TODO: replace with Brijesh's real receiving email when provided.
+// Fallback email when Convex is loading / unreachable / not yet seeded.
 const CONTACT_EMAIL = 'brijesh@example.com';
 
 export default function ContactSection() {
+  const c = useSiteContent();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -13,7 +15,7 @@ export default function ContactSection() {
     e.preventDefault();
     const subject = `New inquiry from ${name || 'your website'}`;
     const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+    window.location.href = `mailto:${c('contact_email', CONTACT_EMAIL)}?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;
   };
@@ -41,7 +43,10 @@ export default function ContactSection() {
           className="text-center text-[#D7E2EA]/60 font-light uppercase tracking-wide mb-12 sm:mb-16 max-w-xl mx-auto"
           style={{ fontSize: 'clamp(0.85rem, 1.4vw, 1.15rem)' }}
         >
-          Tell me about your shoot — weddings, portraits, events, brands. I&apos;ll get back to you.
+          {c(
+            'contact_intro',
+            "Tell me about your shoot — weddings, portraits, events, brands. I'll get back to you.",
+          )}
         </p>
       </FadeIn>
 

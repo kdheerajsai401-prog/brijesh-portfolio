@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { useSiteContent } from '../lib/content';
 
 type Props = {
   className?: string;
@@ -8,10 +9,14 @@ const PROFILE_URL = 'https://instagram.com/brie_o_graphy';
 
 export default function InstagramFollow({ className = '' }: Props) {
   const reduce = useReducedMotion();
+  const c = useSiteContent();
+  const username = c('instagram_username', 'brie_o_graphy');
+  const followers = c('instagram_followers', '478');
+  const profileUrl = c('instagram_profile_url', PROFILE_URL);
 
   return (
     <motion.a
-      href={PROFILE_URL}
+      href={profileUrl}
       target="_blank"
       rel="noopener noreferrer"
       initial={reduce ? false : { y: 40, opacity: 0 }}
@@ -28,13 +33,13 @@ export default function InstagramFollow({ className = '' }: Props) {
 
       <div className="flex flex-col mr-2 sm:mr-3 leading-tight">
         <span className="text-white font-bold text-sm sm:text-base tracking-tight">
-          brie_o_graphy
+          {username}
         </span>
         <span className="text-[#a0a0a0] font-normal text-xs sm:text-sm">
-          @brie_o_graphy
+          @{username}
         </span>
         <span className="text-[#737373] font-normal text-[0.7rem] sm:text-xs">
-          478 followers
+          {followers} followers
         </span>
       </div>
 

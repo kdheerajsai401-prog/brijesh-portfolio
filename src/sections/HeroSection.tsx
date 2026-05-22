@@ -4,8 +4,10 @@ import Magnet from '../components/Magnet';
 import ContactButton from '../components/ContactButton';
 import InstagramFollow from '../components/InstagramFollow';
 import DeviceTilt from '../components/DeviceTilt';
+import { useSiteContent } from '../lib/content';
 
 export default function HeroSection() {
+  const c = useSiteContent();
   return (
     <section
       className="relative h-screen flex flex-col px-6 md:px-10"
@@ -20,9 +22,9 @@ export default function HeroSection() {
               className="hero-heading font-black uppercase tracking-tight text-[14vw] sm:text-[12vw] md:text-[9vw] lg:text-[8.5vw]"
               style={{ lineHeight: 0.95 }}
             >
-              Hi, I&apos;m
+              {c('hero_greeting', "Hi, I'm")}
               <br />
-              Brijesh
+              {c('hero_name', 'Brijesh')}
             </h1>
           </FadeIn>
 
@@ -31,7 +33,10 @@ export default function HeroSection() {
               className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[260px] md:max-w-[320px]"
               style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
             >
-              a gta-based photographer capturing real moments and timeless stories
+              {c(
+                'hero_tagline',
+                'a gta-based photographer capturing real moments and timeless stories',
+              )}
             </p>
           </FadeIn>
 

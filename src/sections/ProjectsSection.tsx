@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import FadeIn from '../components/FadeIn';
 import LiveProjectButton from '../components/LiveProjectButton';
 
@@ -7,42 +9,38 @@ type Project = {
   number: string;
   category: string;
   name: string;
-  col1: [string, string];
+  col1a: string;
+  col1b: string;
   col2: string;
 };
 
 const U = (id: string, w = 1280) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=85&fit=crop`;
 
+// Fallback: rendered while Convex loads or if it's unreachable / not yet seeded.
 const PROJECTS: Project[] = [
   {
     number: '01',
     category: 'Wedding',
     name: 'Anaya & Rohan',
-    col1: [
-      U('1511285560929-80b456fea0bc'), // rings closeup
-      U('1606216794074-735e91aa2c92'), // bride portrait
-    ],
+    col1a: U('1511285560929-80b456fea0bc'), // rings closeup
+    col1b: U('1606216794074-735e91aa2c92'), // bride portrait
     col2: U('1519741497674-611481863552'), // couple
   },
   {
     number: '02',
     category: 'Editorial',
     name: 'Vogue Bombay',
-    col1: [
-      U('1483985988355-763728e1935b'), // fashion editorial detail
-      U('1487412720507-e7ab37603c6f'), // fashion model
-    ],
+    col1a: U('1483985988355-763728e1935b'), // fashion editorial detail
+    col1b: U('1487412720507-e7ab37603c6f'), // fashion model
     col2: U('1469334031218-e382a71b716b'), // fashion spread
   },
   {
     number: '03',
     category: 'Brand',
     name: 'Kismet Coffee Co.',
-    col1: [
-      U('1509042239860-f550ce710b93'), // coffee beans
-      U('1495474472287-4d71bcdd2085'), // coffee cup
-    ],
+    col1a: U('1509042239860-f550ce710b93'), // coffee beans
+    col1b: U('1495474472287-4d71bcdd2085'), // coffee cup
     col2: U('1497935586351-b67a49e012bf'), // coffee art
   },
 ];
@@ -115,14 +113,14 @@ function Card({
         <div className="flex gap-3 sm:gap-4 md:gap-5">
           <div className="flex flex-col gap-3 sm:gap-4 md:gap-5" style={{ width: '40%' }}>
             <img
-              src={project.col1[0]}
+              src={project.col1a}
               alt=""
               loading="lazy"
               className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
               style={{ height: 'clamp(130px, 16vw, 230px)' }}
             />
             <img
-              src={project.col1[1]}
+              src={project.col1b}
               alt=""
               loading="lazy"
               className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
@@ -153,6 +151,9 @@ export default function ProjectsSection() {
     offset: ['start start', 'end end'],
   });
 
+  const data = useQuery(api.projects.list);
+  const projects: Project[] = data ?? PROJECTS;
+
   return (
     <section
       id="projects"
@@ -173,12 +174,12 @@ export default function ProjectsSection() {
       </FadeIn>
 
       <div ref={containerRef} className="relative">
-        {PROJECTS.map((p, i) => (
+        {projects.map((p, i) => (
           <Card
             key={p.number}
             project={p}
             index={i}
-            totalCards={PROJECTS.length}
+            totalCards={projects.length}
             progress={scrollYProgress}
           />
         ))}
