@@ -5,32 +5,12 @@ import ContactButton from '../components/ContactButton';
 import InstagramFollow from '../components/InstagramFollow';
 import DeviceTilt from '../components/DeviceTilt';
 
-const NAV_LINKS = ['About', 'Work', 'Services', 'Contact'];
-
 export default function HeroSection() {
   return (
     <section
       className="relative h-screen flex flex-col px-6 md:px-10"
       style={{ overflowX: 'clip' }}
     >
-      {/* Navbar */}
-      <FadeIn
-        as="nav"
-        delay={0}
-        y={-20}
-        className="flex justify-between items-center pt-6 md:pt-8 relative z-20"
-      >
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link}
-            href={`#${link.toLowerCase()}`}
-            className="text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-lg lg:text-[1.4rem] hover:opacity-70 transition-opacity duration-200"
-          >
-            {link}
-          </a>
-        ))}
-      </FadeIn>
-
       {/* Split content */}
       <div className="flex-1 w-full max-w-[1200px] mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-6 py-6 md:py-0">
         {/* Text column */}
@@ -51,7 +31,7 @@ export default function HeroSection() {
               className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[260px] md:max-w-[320px]"
               style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
             >
-              a photographer driven by capturing real moments and timeless stories
+              a gta-based photographer capturing real moments and timeless stories
             </p>
           </FadeIn>
 

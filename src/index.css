@@ -8,6 +8,11 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px; /* offset for the fixed navbar when jumping to anchors */
+}
+
 html, body, #root {
   background: #0C0C0C;
   font-family: 'Kanit', sans-serif;

@@ -1,29 +1,69 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { EffectCoverflow, Pagination, Scrollbar } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
 import FadeIn from '../components/FadeIn';
 
 const U = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?w=900&h=1200&fit=crop&q=85`;
+  `https://images.unsplash.com/photo-${id}?w=900&h=1100&fit=crop&q=85`;
 
-type Shot = { src: string; label: string };
+type Shot = { src: string; alt: string };
 
-const GALLERY: Shot[] = [
-  { src: U('1519741497674-611481863552'), label: 'Weddings' },
-  { src: U('1494790108377-be9c29b29330'), label: 'Portraits' },
-  { src: U('1483985988355-763728e1935b'), label: 'Fashion' },
-  { src: U('1493225457124-a3eb161ffa5f'), label: 'Events' },
-  { src: U('1606216794074-735e91aa2c92'), label: 'Bridal' },
-  { src: U('1487412720507-e7ab37603c6f'), label: 'Editorial' },
-  { src: U('1488646953014-85cb44e25828'), label: 'Travel' },
+const IMAGES: Shot[] = [
+  { src: U('1519741497674-611481863552'), alt: 'Wedding' },
+  { src: U('1494790108377-be9c29b29330'), alt: 'Portrait' },
+  { src: U('1483985988355-763728e1935b'), alt: 'Fashion' },
+  { src: U('1493225457124-a3eb161ffa5f'), alt: 'Event' },
+  { src: U('1606216794074-735e91aa2c92'), alt: 'Bridal' },
+  { src: U('1487412720507-e7ab37603c6f'), alt: 'Editorial' },
+  { src: U('1485827404703-89b55fcc595e'), alt: 'Studio portrait' },
+  { src: U('1429962714451-bb934ecdc4ec'), alt: 'Live event' },
+  { src: U('1488646953014-85cb44e25828'), alt: 'Travel' },
 ];
 
-export default function GallerySection() {
-  const [active, setActive] = useState(3);
+const carouselCss = `
+  .work-carousel {
+    width: 100%;
+    padding-bottom: 72px !important;
+  }
+  .work-carousel .swiper-slide {
+    width: clamp(230px, 72vw, 320px);
+    height: clamp(320px, 52vh, 420px);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .work-carousel .swiper-pagination {
+    bottom: 38px !important;
+  }
+  .work-carousel .swiper-pagination-bullet {
+    background-color: rgba(255, 255, 255, 0.35) !important;
+    opacity: 1 !important;
+  }
+  .work-carousel .swiper-pagination-bullet-active {
+    background-color: #ffffff !important;
+  }
+  .work-carousel .swiper-scrollbar {
+    width: clamp(180px, 55%, 460px) !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    bottom: 8px !important;
+    height: 6px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    cursor: grab;
+  }
+  .work-carousel .swiper-scrollbar-drag {
+    background: rgba(255, 255, 255, 0.6) !important;
+  }
+`;
 
+export default function GallerySection() {
   return (
     <section
       id="work"
-      className="px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-28"
+      className="px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-28 overflow-hidden"
       style={{ background: '#0C0C0C' }}
     >
       <FadeIn y={40}>
@@ -36,58 +76,40 @@ export default function GallerySection() {
       </FadeIn>
 
       <FadeIn delay={0.1} y={30}>
-        <div className="flex w-full max-w-6xl mx-auto gap-1.5 sm:gap-2 h-[20rem] sm:h-[26rem] md:h-[30rem]">
-          {GALLERY.map((shot, i) => (
-            <motion.div
-              key={shot.label}
-              className="relative cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl min-w-0"
-              style={{ flexBasis: 0 }}
-              animate={{ flexGrow: active === i ? 8 : 1 }}
-              transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-              onClick={() => setActive(i)}
-              onHoverStart={() => setActive(i)}
-            >
-              <img
-                src={shot.src}
-                alt={shot.label}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 h-full w-full object-cover select-none"
-                draggable={false}
-              />
-              <AnimatePresence>
-                {active === i && (
-                  <motion.div
-                    key="overlay"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"
-                  />
-                )}
-              </AnimatePresence>
-              <AnimatePresence>
-                {active === i && (
-                  <motion.div
-                    key="label"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 12 }}
-                    transition={{ duration: 0.3, delay: 0.05 }}
-                    className="absolute inset-0 flex flex-col items-start justify-end p-4 sm:p-6"
-                  >
-                    <span
-                      className="text-white font-medium uppercase tracking-widest whitespace-nowrap"
-                      style={{ fontSize: 'clamp(0.9rem, 1.6vw, 1.5rem)' }}
-                    >
-                      {shot.label}
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+        <div className="relative w-full max-w-4xl mx-auto">
+          <style>{carouselCss}</style>
+          <Swiper
+            effect="coverflow"
+            grabCursor
+            centeredSlides
+            slidesPerView="auto"
+            loop
+            slideToClickedSlide
+            spaceBetween={0}
+            coverflowEffect={{
+              rotate: 40,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true, hide: false }}
+            className="work-carousel"
+            modules={[EffectCoverflow, Pagination, Scrollbar]}
+          >
+            {IMAGES.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  className="h-full w-full object-cover"
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  draggable={false}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </FadeIn>
     </section>
